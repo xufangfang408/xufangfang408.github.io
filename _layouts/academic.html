@@ -13,6 +13,7 @@
     <meta property="og:url" content="{{ page.url | absolute_url }}">
     <meta property="og:image" content="{{ site.data.academic.portrait | absolute_url }}">
     <link rel="icon" type="image/svg+xml" href="{{ '/images/fx-monogram.svg' | relative_url }}">
+    <link rel="stylesheet" href="{{ '/assets/css/academicons.css' | relative_url }}">
     <link rel="stylesheet" href="{{ '/assets/css/academic.css' | relative_url }}">
   </head>
   <body>
@@ -39,9 +40,15 @@
           <p class="profile-role">{{ person.role }}<br>{{ person.field }}</p>
           <p class="profile-affiliation">{{ person.institution }}<br><span>{{ person.location }}</span></p>
           <div class="profile-links">
-            <a href="mailto:{{ person.email }}"><span aria-hidden="true">↗</span> Email</a>
-            <a href="{{ person.github }}"><span aria-hidden="true">↗</span> GitHub</a>
-            <a href="{{ person.cv | relative_url }}"><span aria-hidden="true">↓</span> Curriculum Vitae <span class="file-label">PDF</span></a>
+            <a href="mailto:{{ person.email }}" data-copy-email="{{ person.email }}" title="{{ person.email }}"><i class="fas fa-envelope" aria-hidden="true"></i><span class="link-label">Email</span></a>
+            <a href="{{ person.github }}" target="_blank" rel="noopener noreferrer"><i class="fab fa-github" aria-hidden="true"></i><span>GitHub</span></a>
+            {% if person.googlescholar %}
+            <a href="{{ person.googlescholar }}" target="_blank" rel="noopener noreferrer"><i class="ai ai-google-scholar" aria-hidden="true"></i><span>Google Scholar</span></a>
+            {% endif %}
+            {% if person.bilibili %}
+            <a href="{{ person.bilibili }}" target="_blank" rel="noopener noreferrer"><i class="fab fa-bilibili" aria-hidden="true"></i><span>Bilibili</span></a>
+            {% endif %}
+            <a href="{{ person.cv | relative_url }}"><i class="ai ai-cv" aria-hidden="true"></i><span>CV <span class="file-label">PDF</span></span></a>
           </div>
           <p class="profile-focus">Spatial omics<br>Multimodal learning<br>Computational biology</p>
         </div>
@@ -51,5 +58,23 @@
     <footer class="site-footer">
       <div><span>© {{ 'now' | date: '%Y' }} {{ person.name }}</span><span>Built with <a href="https://jekyllrb.com/">Jekyll</a> · <a href="https://github.com/academicpages/academicpages.github.io">Academic Pages</a></span></div>
     </footer>
+    <script>
+      document.querySelectorAll("[data-copy-email]").forEach(function (link) {
+        link.addEventListener("click", function (event) {
+          var email = link.getAttribute("data-copy-email");
+          var label = link.querySelector(".link-label");
+          if (!email || !label || !navigator.clipboard) return;
+          event.preventDefault();
+          navigator.clipboard.writeText(email).then(function () {
+            var previous = label.textContent;
+            label.textContent = "Copied";
+            window.setTimeout(function () { label.textContent = previous; }, 1600);
+            window.location.href = "mailto:" + email;
+          }).catch(function () {
+            window.location.href = "mailto:" + email;
+          });
+        });
+      });
+    </script>
   </body>
 </html>

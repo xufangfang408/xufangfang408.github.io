@@ -35,7 +35,7 @@ author:
   # Academic websites
   academia         : # URL
   arxiv            : # URL - Update with the correct link to your profile
-  googlescholar    :
+  googlescholar    : "https://scholar.google.com/citations?user=ltnLWDAAAAAJ&hl=en"
   inspire-hep      : # URL
   impactstory      : # URL
   orcid            :
@@ -80,6 +80,7 @@ author:
   wikipedia        : # Username
   xing             : # Username
   youtube          : # Username
+  bilibili         : "https://space.bilibili.com/492933105?spm_id_from=333.788.0.0"
   zhihu            : # Username
 
 # Publication Category - The following the list of publication categories and their headings
