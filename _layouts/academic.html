@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% if page.url != '/' %}{{ page.title | escape }} | {% endif %}{{ site.title | escape }}</title>
+    <meta name="description" content="{{ page.description | default: site.description | escape }}">
+    <meta name="theme-color" content="#fafbf9">
+    <link rel="canonical" href="{{ page.url | absolute_url }}">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{{ page.title | default: site.title | escape }}">
+    <meta property="og:description" content="{{ site.description | escape }}">
+    <meta property="og:url" content="{{ page.url | absolute_url }}">
+    <meta property="og:image" content="{{ site.data.academic.portrait | absolute_url }}">
+    <link rel="icon" type="image/svg+xml" href="{{ '/images/fx-monogram.svg' | relative_url }}">
+    <link rel="stylesheet" href="{{ '/assets/css/academic.css' | relative_url }}">
+  </head>
+  <body>
+    {% assign person = site.data.academic %}
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="wordmark" href="{{ '/' | relative_url }}">Fangfang Xu<span class="wordmark-dot">.</span></a>
+        <nav aria-label="Main navigation">
+          {% for link in site.data.navigation.main %}
+          <a href="{{ link.url | relative_url }}"{% if page.url == link.url %} aria-current="page"{% endif %}>{{ link.title }}</a>
+          {% endfor %}
+        </nav>
+      </div>
+    </header>
+    <div class="site-shell">
+      <aside class="profile" aria-label="Profile and contact">
+        <a class="portrait-link" href="{{ '/' | relative_url }}" aria-label="Fangfang Xu home">
+          <img class="portrait" src="{{ person.portrait | relative_url }}" alt="Portrait of Fangfang Xu" width="400" height="400" fetchpriority="high">
+        </a>
+        <div class="profile-info">
+          <p class="profile-name">{{ person.name }}</p>
+          <p class="profile-chinese" lang="zh-Hans">{{ person.name_zh }}</p>
+          <p class="profile-role">{{ person.role }}<br>{{ person.field }}</p>
+          <p class="profile-affiliation">{{ person.institution }}<br><span>{{ person.location }}</span></p>
+          <div class="profile-links">
+            <a href="mailto:{{ person.email }}"><span aria-hidden="true">↗</span> Email</a>
+            <a href="{{ person.github }}"><span aria-hidden="true">↗</span> GitHub</a>
+            <a href="{{ person.cv | relative_url }}"><span aria-hidden="true">↓</span> Curriculum Vitae <span class="file-label">PDF</span></a>
+          </div>
+          <p class="profile-focus">Spatial omics<br>Multimodal learning<br>Computational biology</p>
+        </div>
+      </aside>
+      <main id="main" class="main-content" tabindex="-1">{{ content }}</main>
+    </div>
+    <footer class="site-footer">
+      <div><span>© {{ 'now' | date: '%Y' }} {{ person.name }}</span><span>Built with <a href="https://jekyllrb.com/">Jekyll</a> · <a href="https://github.com/academicpages/academicpages.github.io">Academic Pages</a></span></div>
+    </footer>
+  </body>
+</html>

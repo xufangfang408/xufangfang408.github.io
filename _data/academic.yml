@@ -1,0 +1,68 @@
+name: Fangfang Xu
+name_zh: 徐方芳
+role: Master's Student
+field: Computer Science and Technology
+institution: Xiamen University
+location: Xiamen, China
+email: xufangfang408@gmail.com
+github: https://github.com/xufangfang408
+cv: /files/Fangfang-Xu-CV.pdf
+portrait: /images/fangfang-xu.jpg
+
+interests:
+  - title: Spatial & multimodal biology
+    description: Learning representations of biological states from spatial omics and histopathology.
+  - title: Virtual cells & tissues
+    description: Modeling how cells and tissues respond to genetic and chemical perturbations.
+  - title: Predictive intervention
+    description: Connecting biological measurements with testable predictions of intervention response and target prioritization.
+
+publication:
+  title: "Spaceland: Histology-Guided Reconstruction of High-Resolution Whole-Organ 3D Molecular Atlases from Sparse Spatial Transcriptomics"
+  authors: '<strong>Fangfang Xu*</strong>, Zhenfeng Zhuang*, Yun Zhu*, Bo Ying, Naiqiao Hou, Weiping Lin, Liansheng Wang, Chaoyong Yang, Jia Song'
+  venue: bioRxiv
+  year: 2026
+  status: Manuscript under revision at Nature Communications
+  period: Dec. 2024 – Present
+  doi: 10.64898/2026.07.23.739686
+  preprint: https://www.biorxiv.org/content/10.64898/2026.07.23.739686v1
+  code: https://github.com/xufangfang408/Spaceland
+  summary: A histology-conditioned continuous molecular field model that combines foundation-model H&E representations with inter-section deformation modeling to infer gene expression across sparsely measured tissue volumes.
+  results: Reconstructed continuous 3D gene-expression fields on an 8-μm grid with molecular sampling gaps up to 400 μm, evaluated across mouse olfactory bulb, mouse hemibrain, and planarian regeneration datasets.
+  contribution: Conceived the research project, designed the model, conducted the majority of benchmarking experiments, and wrote the manuscript.
+
+projects:
+  - name: Spaceland-omics
+    subtitle: Histology-guided spatial multi-omics modeling
+    period: Jun. 2026 – Present
+    description: Extending Spaceland from transcriptomics to multimodal molecular prediction using serial histology as a shared spatial context. Investigating whether a common tissue representation can support continuous modeling of transcriptomic and proteomic states across sparsely measured sections.
+  - name: OmicsBind
+    subtitle: Histology-anchored multimodal representation learning
+    period: Jul. 2026 – Present
+    description: Developing an ImageBind-inspired framework to align spatial molecular modalities through a shared histology anchor. Each molecular modality is paired with H&E, rather than directly with every other modality, to learn from partially paired spatial-omics datasets.
+
+education:
+  - institution: Xiamen University
+    degree: M.S. in Computer Science and Technology
+    period: Sep. 2024 – Jun. 2027 (expected)
+    location: Xiamen, China
+    gpa: 3.7/4.0
+    detail: "Specialization: Health Big Data and Intelligent Medicine."
+    advisors: Chaoyong Yang, Liansheng Wang, and Jia Song
+    courses: Matrix Theory (96), Machine Learning (94), Deep Learning (93), Computational Linguistics (91)
+  - institution: China University of Mining and Technology, Beijing
+    degree: B.Eng. in Remote Sensing Science and Technology
+    period: Sep. 2019 – Jun. 2023
+    location: Beijing, China
+    gpa: 3.69/4.0
+    courses: Advanced Mathematics (99), Probability and Mathematical Statistics (93), Linear Algebra (91)
+
+honors:
+  - title: Second Prize, National Final
+    date: May 2023
+    competition: 14th Chinese Mathematics Competitions for College Students
+    detail: Non-Mathematics Category
+  - title: First Prize, Preliminary Round
+    date: Dec. 2022
+    competition: 14th Chinese Mathematics Competitions for College Students
+    detail: Non-Mathematics Category · Ranked 36th in Beijing

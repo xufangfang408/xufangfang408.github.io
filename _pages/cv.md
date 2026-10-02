@@ -1,64 +1,29 @@
 ---
-layout: archive
-title: "CV"
+layout: academic
+title: Curriculum Vitae
 permalink: /cv/
-author_profile: true
 redirect_from:
   - /resume
 ---
-
-{% include base_path %}
-
-Education
-======
-* Ph.D in Version Control Theory, GitHub University, 2018 (expected)
-* M.S. in Jekyll, GitHub University, 2014
-* B.S. in GitHub, GitHub University, 2012
-
-Work experience
-======
-* Spring 2024: Academic Pages Collaborator
-  * GitHub University
-  * Duties includes: Updates and improvements to template
-  * Supervisor: The Users
-
-* Fall 2015: Research Assistant
-  * GitHub University
-  * Duties included: Merging pull requests
-  * Supervisor: Professor Hub
-
-* Summer 2015: Research Assistant
-  * GitHub University
-  * Duties included: Tagging issues
-  * Supervisor: Professor Git
-  
-Skills
-======
-* Skill 1
-* Skill 2
-  * Sub-skill 2.1
-  * Sub-skill 2.2
-  * Sub-skill 2.3
-* Skill 3
-
-Publications
-======
-  <ul>{% for post in site.publications reversed %}
-    {% include archive-single-cv.html %}
-  {% endfor %}</ul>
-  
-Talks
-======
-  <ul>{% for post in site.talks reversed %}
-    {% include archive-single-talk-cv.html  %}
-  {% endfor %}</ul>
-  
-Teaching
-======
-  <ul>{% for post in site.teaching reversed %}
-    {% include archive-single-cv.html %}
-  {% endfor %}</ul>
-  
-Service and leadership
-======
-* Currently signed in to 43 different slack teams
+<p class="eyebrow">Fangfang Xu · 徐方芳</p>
+<h1>Curriculum Vitae</h1>
+<p class="page-lead">Education, research experience, and selected honors.</p>
+<a class="button" href="{{ site.data.academic.cv | relative_url }}">Download full CV <span class="file-label">PDF</span> <span aria-hidden="true">↓</span></a>
+<section class="section">
+  <div class="section-heading"><h2>Research interests</h2></div>
+  <p>Predictive and interventional computational biology, with a focus on modeling how cells and tissues respond to genetic and chemical perturbations. I am particularly interested in multimodal and spatial representations of biological states for perturbation-response prediction, virtual cell and tissue modeling, and target prioritization.</p>
+</section>
+<section class="section">
+  <div class="section-heading"><h2>Education</h2></div>
+  {% include academic-education.html courses=true %}
+</section>
+<section class="section">
+  <div class="section-heading"><h2>Research experience & preprint</h2></div>
+  <p class="item-date">Spaceland · {{ site.data.academic.publication.period }}</p>
+  {% include academic-publication.html %}
+  {% include academic-projects.html %}
+</section>
+<section class="section">
+  <div class="section-heading"><h2>Selected honors</h2></div>
+  {% include academic-honors.html %}
+</section>
