@@ -89,25 +89,7 @@ html[data-theme="dark"] .portrait { box-shadow: 0 0 0 1px var(--line); }
 .profile-links a { display: flex; align-items: center; gap: 8px; width: max-content; max-width: 100%; text-decoration: none; font-size: 13px; line-height: 1.4; }
 .profile-links a:hover { text-decoration: underline; }
 .profile-links i { flex: 0 0 16px; width: 16px; font-style: normal; font-size: 14px; line-height: 1; text-align: center; }
-@font-face {
-  font-family: "Font Awesome 6 Free";
-  font-style: normal;
-  font-weight: 900;
-  font-display: block;
-  src: url("../fonts/fa-solid-900.woff2") format("woff2"), url("../fonts/fa-solid-900.ttf") format("truetype");
-}
-@font-face {
-  font-family: "Font Awesome 6 Brands";
-  font-style: normal;
-  font-weight: 400;
-  font-display: block;
-  src: url("../fonts/fa-brands-400.woff2") format("woff2"), url("../fonts/fa-brands-400.ttf") format("truetype");
-}
-.profile-links .fas { font-family: "Font Awesome 6 Free"; font-weight: 900; }
-.profile-links .fab { font-family: "Font Awesome 6 Brands"; font-weight: 400; }
-.profile-links .fa-envelope::before { content: "\f0e0"; }
-.profile-links .fa-github::before { content: "\f09b"; }
-.profile-links .fa-bilibili::before { content: "\e3d9"; }
+.profile-links .profile-icon { flex: 0 0 15px; width: 15px; height: 15px; fill: currentColor; }
 .file-label { font: 10px/1.2 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; letter-spacing: .5px; border: 1px solid currentColor; border-radius: 3px; padding: 2px 4px; margin-left: 3px; opacity: .8; }
 .profile-focus { margin-top: 26px; font-size: 11px; line-height: 1.95; letter-spacing: .55px; color: var(--muted); }
 .main-content { min-width: 0; }
