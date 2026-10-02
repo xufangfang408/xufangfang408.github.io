@@ -81,7 +81,6 @@ html[data-theme="dark"] .portrait { box-shadow: 0 0 0 1px var(--line); }
 .portrait-link { display: block; width: 174px; }
 .portrait { display: block; width: 174px; height: 174px; object-fit: cover; border-radius: 9px; }
 .profile-name { font-size: 23px; font-weight: 650; line-height: 1.4; margin-top: 24px; letter-spacing: -.5px; }
-.profile-chinese { margin-top: 3px; font-size: 17px; letter-spacing: 3px; color: var(--muted); }
 .profile-role { font-size: 13px; line-height: 1.8; margin-top: 19px; }
 .profile-affiliation { font-size: 14px; line-height: 1.8; margin-top: 14px; font-weight: 600; }
 .profile-affiliation span { color: var(--muted); font-size: 13px; font-weight: 400; }
@@ -177,7 +176,6 @@ html[data-theme="dark"] .portrait { box-shadow: 0 0 0 1px var(--line); }
   .portrait-link, .portrait { width: 116px; height: 116px; flex-shrink: 0; }
   .profile-info { min-width: 0; }
   .profile-name { font-size: 21px; margin-top: 0; }
-  .profile-chinese { font-size: 14px; }
   .profile-role { margin-top: 8px; font-size: 12px; line-height: 1.6; }
   .profile-affiliation { margin-top: 8px; font-size: 12px; }
   .profile-affiliation span { font-size: 12px; }
