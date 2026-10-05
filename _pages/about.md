@@ -12,8 +12,8 @@ redirect_from:
   <p class="eyebrow">Computational biology · Spatial omics · AI</p>
   <h1 id="about-title">Fangfang Xu <span lang="zh-Hans">徐方芳</span></h1>
   <p class="intro-lead">From spatial biological maps<br class="desktop-break"> to predictive models of cells and tissues.</p>
-  <p>I am a master's student in <strong>Computer Science and Technology at Xiamen University</strong>, specializing in Health Big Data and Intelligent Medicine. I am jointly supervised by Chaoyong Yang, Liansheng Wang, and Jia Song.</p>
-  <p>My research brings together <strong>spatial omics, histopathology, and multimodal learning</strong>. Building on my work in 3D molecular reconstruction, I aim to develop models that connect biological measurements with experimentally testable predictions of how cells and tissues respond to genetic and chemical interventions.</p>
+  <p>I am a master's student in <strong>Computer Science and Technology at Xiamen University</strong>, specializing in Health Big Data and Intelligent Medicine. I am jointly supervised by <strong>Chaoyong Yang</strong>, <strong>Liansheng Wang</strong>, and <strong>Jia Song</strong>.</p>
+  <p>My research focuses on <strong>multimodal modeling of biological systems</strong> and <strong>perturbation-response prediction</strong>. I develop computational models that integrate molecular, morphological, and spatial measurements to learn biological states and predict cellular and tissue responses to genetic and chemical perturbations.</p>
   <div class="intro-actions"><a class="button" href="{{ site.data.academic.cv | relative_url }}">Download CV <span aria-hidden="true">↓</span></a><a class="text-link" href="mailto:{{ site.data.academic.email }}">Get in touch <span aria-hidden="true">↗</span></a></div>
 </section>
 
