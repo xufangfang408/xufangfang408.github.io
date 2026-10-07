@@ -1,5 +1,12 @@
 <div class="honors-list">
 {% for honor in site.data.academic.honors %}
-  <article class="honor"><div><h3>{{ honor.title }}</h3><p>{{ honor.competition }}</p><p class="muted">{{ honor.detail }}</p></div><span class="item-date">{{ honor.date }}</span></article>
+  <article class="honor">
+    <div class="honor-heading">
+      <h3>{{ honor.title }}</h3>
+      <span class="item-date">{{ honor.date }}</span>
+    </div>
+    <p>{{ honor.competition }}</p>
+    <p class="muted">{{ honor.detail }}</p>
+  </article>
 {% endfor %}
 </div>
