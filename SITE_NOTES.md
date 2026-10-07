@@ -22,16 +22,6 @@
 
 模板示例文件仍保留在仓库中，但已在 `_config.yml` 中排除，不会作为个人成果发布。`local/` 同样不参与网站生成，且已被 Git 忽略。后续新增论文时，应更新学术数据和页面；不要直接启用模板示例集合。
 
-## 2026-10-07 布局更新
-
-- 参照 [Zheng Lab](https://zhenglab.sjtu.edu.cn/index.php?c=category&id=1) 和 [Weidi Xie](https://weidixie.github.io/index.html)，改为居中宽版排版。首页集中呈现姓名、照片、简介和学术链接，内页使用简短个人信息栏，不再使用固定侧栏。
-- 正文为 18px，辅助内容主要为 16–17px，标题采用统一的无衬线字体。论文、教育和荣誉以细分隔线组织，项目在桌面端并排、手机端单列。
-- Lato regular/bold 的 Latin WOFF2 字体随站点保存在 `assets/fonts/`，无需外部字体服务；许可证为同目录的 `Lato-OFL.txt`。中文使用系统中文字体。
-- 学术数据、正文内容、照片、下载版 CV、原页面地址及跳转保持原有信息。公共学术链接由 `_includes/academic-links.html` 统一维护；CV 页仅保留一处 PDF 下载入口。
-- 亮暗主题、键盘导航、页内跳转和打印样式继续可用。
-
-本地无需重复启动预览服务即可刷新静态预览文件：`node local/site-preview/preview.cjs --render`。首次启动仍使用 `node local/site-preview/preview.cjs`，然后访问 `http://127.0.0.1:4000`。此预览不替代正式 Jekyll 构建。
-
 ## 可选补充信息
 
 1. Google Scholar、ORCID 链接（如有）。
