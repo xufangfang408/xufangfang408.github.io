@@ -1,8 +1,10 @@
 <div class="education-list">
 {% for item in site.data.academic.education %}
   <article class="education-item">
-    <p class="item-date">{{ item.period }}</p>
-    <h3>{{ item.institution }}</h3>
+    <div class="education-heading">
+      <h3>{{ item.institution }}</h3>
+      <p class="item-date">{{ item.period }}</p>
+    </div>
     <p class="degree">{{ item.degree }}</p>
     <p class="muted">GPA: {{ item.gpa }}{% if item.detail %} · {{ item.detail }}{% endif %}</p>
     {% if item.advisors %}<p class="muted">Joint supervision: {{ item.advisors }}.</p>{% endif %}

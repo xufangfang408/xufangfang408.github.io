@@ -1,0 +1,8 @@
+{% assign profile = site.data.academic %}
+<div class="profile-links" aria-label="Academic links">
+  <a href="mailto:{{ profile.email }}" data-copy-email="{{ profile.email }}" title="{{ profile.email }}"><span class="link-label">Email</span></a>
+  {% if profile.googlescholar %}<a href="{{ profile.googlescholar }}" target="_blank" rel="noopener noreferrer">Google Scholar</a>{% endif %}
+  <a href="{{ profile.github }}" target="_blank" rel="noopener noreferrer">GitHub</a>
+  {% if profile.bilibili %}<a href="{{ profile.bilibili }}" target="_blank" rel="noopener noreferrer">Bilibili</a>{% endif %}
+  {% unless page.url == '/cv/' %}<a class="cv-link" href="{{ profile.cv | relative_url }}">Download CV <span aria-hidden="true">↓</span></a>{% endunless %}
+</div>

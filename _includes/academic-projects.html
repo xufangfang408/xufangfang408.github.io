@@ -1,7 +1,10 @@
 <div class="projects">
 {% for project in site.data.academic.projects %}
   <article class="project">
-    <div class="project-heading"><h3>{{ project.name }}</h3><span class="status status-quiet">In progress</span></div>
+    <div class="project-heading">
+      <h3>{{ project.name }}</h3>
+      <span class="status status-quiet">In progress</span>
+    </div>
     <p class="project-subtitle">{{ project.subtitle }}</p>
     <p class="item-date">{{ project.period }}</p>
     <p>{{ project.description }}</p>
