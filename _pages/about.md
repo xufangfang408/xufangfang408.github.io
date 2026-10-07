@@ -11,7 +11,7 @@ redirect_from:
 <section class="intro" aria-labelledby="about-title">
   <p class="eyebrow">Computational biology · Spatial omics · AI</p>
   <h1 id="about-title">Fangfang Xu <span lang="zh-Hans">徐方芳</span></h1>
-  <p class="intro-lead"><em>Work on things that matter.<br class="desktop-break"> 做值得做的事</em></p>
+  <p class="intro-lead"><em>Work on things that matter.</em></p>
   <p>I am a master's student in <strong>Computer Science and Technology at Xiamen University</strong>, specializing in Health Big Data and Intelligent Medicine. I am jointly supervised by <strong>Chaoyong Yang</strong>, <strong>Liansheng Wang</strong>, and <strong>Jia Song</strong>.</p>
   <p>My research focuses on <strong>multimodal modeling of biological systems</strong> and <strong>perturbation-response prediction</strong>. I develop computational models that integrate molecular, morphological, and spatial measurements to learn biological states and predict cellular and tissue responses to genetic and chemical perturbations.</p>
   <div class="intro-actions"><a class="button" href="{{ site.data.academic.cv | relative_url }}">Download CV <span aria-hidden="true">↓</span></a><a class="text-link" href="mailto:{{ site.data.academic.email }}">Get in touch <span aria-hidden="true">↗</span></a></div>
