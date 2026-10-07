@@ -12,12 +12,12 @@ cv: /files/Fangfang-Xu-CV.pdf
 portrait: /images/fangfang-xu.jpg
 
 interests:
-  - title: Spatial & multimodal biology
-    description: Learning representations of biological states from spatial omics and histopathology.
-  - title: Virtual cells & tissues
-    description: Modeling how cells and tissues respond to genetic and chemical perturbations.
-  - title: Predictive intervention
-    description: Connecting biological measurements with testable predictions of intervention response and target prioritization.
+  - title: Multimodal biological representation
+    description: Learning biological states from spatial omics, histopathology, and other molecular measurements.
+  - title: "Virtual cells & perturbation modeling"
+    description: Predicting how cells and tissues respond to genetic and chemical perturbations.
+  - title: "Target discovery & intervention design"
+    description: Identifying actionable targets and prioritizing interventions to drive biological systems toward desired states.
 
 publication:
   title: "Spaceland: Histology-Guided Reconstruction of High-Resolution Whole-Organ 3D Molecular Atlases from Sparse Spatial Transcriptomics"
