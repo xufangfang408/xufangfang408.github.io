@@ -41,7 +41,7 @@ projects:
   - name: OmicsBind
     subtitle: Histology-anchored multimodal representation learning
     period: Jul. 2026 – Present
-    description: Developing an ImageBind-inspired framework to align spatial molecular modalities through a shared histology anchor. Each molecular modality is paired with H&E, rather than directly with every other modality, to learn from partially paired spatial-omics datasets.
+    description: Exploring histology as a shared anchor for learning representations across partially paired spatial molecular modalities. The project investigates whether H&E can provide a common reference space for integrating datasets in which molecular modalities are not directly paired.
 
 education:
   - institution: Xiamen University
