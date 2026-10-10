@@ -1,0 +1,20 @@
+{% assign visitor_map = site.visitor_map %}
+{% if visitor_map.enabled and visitor_map.image_url != blank and visitor_map.stats_url != blank %}
+<section class="visitor-section" aria-labelledby="visitor-title">
+  <h2 id="visitor-title">Visitors around the world</h2>
+  <p class="visitor-intro">Thank you for stopping by.</p>
+  <figure class="visitor-map" data-visitor-map>
+    <a class="visitor-map-link" href="{{ visitor_map.stats_url | escape }}" target="_blank" rel="noopener noreferrer" aria-label="View visitor statistics on Flag Counter (opens in a new tab)">
+      <div class="visitor-map-frame" style="aspect-ratio: {{ visitor_map.width }} / {{ visitor_map.height }};">
+        <img class="visitor-map-image" src="{{ visitor_map.image_url | escape }}" alt="World map showing the countries visitors come from" width="{{ visitor_map.width }}" height="{{ visitor_map.height }}" loading="eager" decoding="async" fetchpriority="low">
+        <div class="visitor-map-placeholder" role="status" aria-live="polite">
+          <svg viewBox="0 0 48 48" width="40" height="40" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="24" cy="24" r="19"/><ellipse cx="24" cy="24" rx="9" ry="19"/><path d="M5 24h38M9 13h30M9 35h30"/></g></svg>
+          <p data-visitor-map-status>Loading visitor map…</p>
+        </div>
+      </div>
+    </a>
+    <figcaption>Visitor locations · <a href="{{ visitor_map.stats_url | escape }}" target="_blank" rel="noopener noreferrer">Flag Counter <span aria-hidden="true">↗</span></a></figcaption>
+  </figure>
+</section>
+<script src="{{ '/assets/js/visitor-map.js' | relative_url }}?v={{ site.time | date: '%Y%m%d%H%M%S' }}" defer></script>
+{% endif %}

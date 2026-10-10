@@ -149,6 +149,22 @@ body.academic-v2 .main-content { width: 100%; grid-column: 1 / -1; }
 .contact-section p:not(.eyebrow) { grid-column: 1; color: var(--muted); font-size: 17px; margin-top: 5px; }
 .contact-email { grid-column: 2; grid-row: 2 / 4; align-self: center; font-size: 19px; overflow-wrap: anywhere; }
 .contact-email span { margin-left: 5px; }
+.visitor-section { margin-top: 36px; padding-top: 26px; border-top: 1px solid var(--line); text-align: center; }
+.visitor-section h2 { font-size: 21px; line-height: 1.4; letter-spacing: 0; }
+.visitor-intro { margin-top: 5px; color: var(--muted); font-size: 15px; }
+.visitor-map { width: 100%; max-width: 480px; min-width: 0; margin: 17px auto 0; }
+.visitor-map-link { display: block; border: 1px solid var(--line); border-radius: 5px; overflow: hidden; }
+.visitor-map-link:hover { border-color: var(--accent); }
+.visitor-map-frame { position: relative; width: 100%; background: #fff; }
+.visitor-map-image { display: block; width: 100%; height: auto; }
+.visitor-map-placeholder { display: none; position: absolute; inset: 0; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 16px; background: var(--soft); color: var(--muted); }
+.visitor-map-placeholder p { max-width: 240px; font-size: 14px; line-height: 1.5; }
+.visitor-map[data-map-state="loading"] .visitor-map-image,
+.visitor-map[data-map-state="error"] .visitor-map-image { visibility: hidden; }
+.visitor-map[data-map-state="loading"] .visitor-map-placeholder,
+.visitor-map[data-map-state="error"] .visitor-map-placeholder { display: flex; }
+.visitor-map figcaption { margin-top: 9px; color: var(--muted); font-size: 13px; line-height: 1.5; }
+.visitor-map figcaption a { color: inherit; }
 .site-footer { border-top: 1px solid var(--line); }
 .site-footer > div { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; padding-top: 20px; padding-bottom: 20px; color: var(--muted); font-size: 14px; }
 .site-footer a { color: inherit; }
@@ -214,6 +230,7 @@ body.academic-v2 .main-content { width: 100%; grid-column: 1 / -1; }
   .education-heading .item-date, .honor-heading .item-date { display: block; margin-top: 4px; }
   .education-item h3 { font-size: 21px; }
   .contact-section { margin-top: 30px; padding-top: 24px; }
+  .visitor-section { margin-top: 30px; padding-top: 24px; }
   .identity-info { min-width: 0; }
   .identity-info p { font-size: 15px; }
   .identity-bar .profile-links { padding-left: 0; gap: 6px 20px; }
@@ -262,7 +279,7 @@ body.academic-v2 .main-content { width: 100%; grid-column: 1 / -1; }
     --status-ink: #245389;
   }
   body { background: white; font-size: 11pt; }
-  .site-header, .site-footer, .skip-link, .profile-links, .theme-toggle, .page-heading > .button { display: none; }
+  .site-header, .site-footer, .skip-link, .profile-links, .theme-toggle, .page-heading > .button, .visitor-section { display: none; }
   .site-shell { display: block; max-width: none; min-height: 0; padding: 0; }
   .intro { grid-template-columns: minmax(0, 1fr) 120px; gap: 24px; }
   .intro-copy { display: block; }

@@ -6,6 +6,7 @@
     <title>{% if page.url != '/' %}{{ page.title | escape }} | {% endif %}{{ site.title | escape }}</title>
     <meta name="description" content="{{ page.description | default: site.description | escape }}">
     <meta name="theme-color" content="#ffffff">
+    {% if page.url == '/' %}<meta name="visitor-map-enabled" content="{% if site.visitor_map.enabled %}true{% else %}false{% endif %}">{% endif %}
     <script>
       (function () {
         var saved = null;

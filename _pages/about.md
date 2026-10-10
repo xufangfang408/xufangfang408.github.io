@@ -59,3 +59,5 @@ redirect_from:
   <p>For research conversations and academic inquiries, please reach out by email.</p>
   <a class="contact-email" href="mailto:{{ site.data.academic.email }}">{{ site.data.academic.email }} <span aria-hidden="true">↗</span></a>
 </section>
+
+{% include visitor-map.html %}
