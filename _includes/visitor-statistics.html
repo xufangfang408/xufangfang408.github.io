@@ -5,14 +5,20 @@
   <p class="visitor-period" data-visitor-period role="status">Visit statistics cover the last 30 days.</p>
   <div class="visitor-grid">
     <figure class="visitor-figure">
-      <canvas width="960" height="400" aria-label="World map of visits by country or region" role="img"></canvas>
+      <div class="visitor-map">
+        <canvas width="960" height="400" aria-label="World map of visits by region" role="img"></canvas>
+        <div class="visitor-map-controls" hidden>
+          <button type="button" data-visitor-zoom="in" aria-label="Zoom in">+</button>
+          <button type="button" data-visitor-zoom="out" aria-label="Zoom out" disabled>−</button>
+        </div>
+      </div>
       <figcaption>
-        <span class="visitor-legend" hidden>Fewer <i aria-hidden="true"></i> More</span>
-        <span data-visitor-place>Visits by country or region</span>
+        <span class="visitor-legend" hidden><i aria-hidden="true"></i> Fewer <i aria-hidden="true"></i> More</span>
+        <span data-visitor-place>Visits by region</span>
       </figcaption>
-      <details class="visitor-countries" hidden>
-        <summary>Visits by country or region</summary>
-        <ul data-visitor-countries></ul>
+      <details class="visitor-regions" hidden>
+        <summary>Regional visit counts</summary>
+        <ul data-visitor-regions></ul>
       </details>
     </figure>
     <div class="visitor-sources">

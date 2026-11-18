@@ -9,6 +9,7 @@ on:
     paths:
       - .github/workflows/visitor-statistics.yml
       - scripts/sync-visitor-stats.cjs
+      - scripts/visitor-region-centers.json
 
 permissions:
   contents: write

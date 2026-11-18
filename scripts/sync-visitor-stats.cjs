@@ -1,5 +1,6 @@
 const { writeFile } = require('node:fs/promises');
 const { setTimeout: delay } = require('node:timers/promises');
+const { regions: regionCenters } = require('./visitor-region-centers.json');
 
 const days = 30;
 const pageSize = 100;
@@ -17,6 +18,30 @@ function aggregate(rows, getLabel) {
 function countryCode({ id }) {
   const code = String(id || '').toUpperCase();
   if (/^[A-Z]{2}$/.test(code) && code !== 'ZZ' && code !== 'XX') return code;
+}
+
+function regionKey(name) {
+  return name.normalize('NFD').toLowerCase().replace(/[\p{M}'’]/gu, '')
+    .replace(/[^\p{L}\p{N}]+/gu, ' ').trim();
+}
+
+function regionCoordinates(country) {
+  const primary = new Map();
+  const alternate = new Map();
+
+  function add(centers, name, point) {
+    const key = regionKey(name);
+    // If two subdivisions share a name, leave it unmapped.
+    if (!centers.has(key)) centers.set(key, point);
+    else if (centers.get(key) !== point) centers.set(key, null);
+  }
+
+  for (const [longitude, latitude, [name, ...aliases]] of regionCenters[country] || []) {
+    const point = [longitude, latitude];
+    add(primary, name, point);
+    for (const alias of aliases) add(alternate, alias, point);
+  }
+  return new Map([...alternate, ...primary]);
 }
 
 function sourceLabel({ name, ref_scheme: scheme }) {
@@ -50,22 +75,39 @@ async function snapshot(origin, token, now = new Date(), fetchStats = fetch) {
 
   async function rowsFor(kind) {
     const rows = [];
-    for (let offset = 0; offset < 5000; offset += pageSize) {
-      const { stats, more } = await get(kind, { limit: pageSize, offset });
+    while (rows.length < 5000) {
+      const { stats, more } = await get(kind, { limit: pageSize, offset: rows.length });
       if (stats !== null && !Array.isArray(stats)) throw new Error(`Invalid GoatCounter ${kind} response`);
       rows.push(...(stats || []));
       if (!more) return rows;
+      if (!stats?.length) throw new Error(`Empty GoatCounter ${kind} page`);
     }
     throw new Error(`Too many GoatCounter ${kind} rows to publish a complete snapshot`);
   }
 
   const { total_utc: total } = await get('total');
   if (!Number.isSafeInteger(total) || total < 0) throw new Error('Invalid GoatCounter visit total');
+  const countries = aggregate(await rowsFor('locations'), countryCode);
+  const regions = [];
+  for (const [country] of countries) {
+    const centers = regionCoordinates(country);
+    const rows = await rowsFor(`locations/${country}`);
+    for (const [name, count] of aggregate(rows, ({ name }) => {
+      const label = name?.trim();
+      if (label && !/^\(?unknown\)?$/i.test(label)) return label;
+    })) {
+      const coordinates = centers.get(regionKey(name));
+      regions.push({ country, name, count, ...(coordinates && { coordinates }) });
+    }
+  }
+  regions.sort((a, b) => b.count - a.count || a.country.localeCompare(b.country) || a.name.localeCompare(b.name));
+
   return {
     days,
     updatedAt: end.toISOString(),
     total,
-    countries: aggregate(await rowsFor('locations'), countryCode),
+    countries,
+    regions,
     sources: aggregate(await rowsFor('toprefs'), sourceLabel).slice(0, 7)
   };
 }

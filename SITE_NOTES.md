@@ -33,8 +33,10 @@
 ### 首页地图与流量来源
 
 - 登录 GoatCounter，从右上角账户菜单进入 **API**，创建仅授予 **Stats** 权限的令牌。将令牌保存在 GitHub 仓库 **Settings → Secrets and variables → Actions**，名称为 `GOATCOUNTER_API_TOKEN`。<https://www.goatcounter.com/help/api>
-- 推送后可在 **Actions → Update visitor statistics** 手动运行一次。之后工作流每 6 小时更新 `visitor-stats` 分支中的 `visitor-stats.json`。主页展示最近 30 天的访问总数、国家或地区，以及流量来源排行。
-- 公共快照只包含汇总数字。来源链接按域名合并，推广链接合并为 `Campaign links`。GoatCounter 仪表盘继续保持私有。地图底图使用 Natural Earth 1:110m 数据，由 World Atlas 2.0.2 转换。<https://github.com/topojson/world-atlas>
+- 在 GoatCounter 的 **Settings → Data collection** 中确认已启用 **Region**。国家列表留空时适用于所有国家。地区统计的粒度是省、州等一级行政区，启用后开始记录。
+- 推送后可在 **Actions → Update visitor statistics** 手动运行一次。之后工作流每 6 小时更新 `visitor-stats` 分支中的 `visitor-stats.json`。主页展示最近 30 天的访问总数、地区圆点和流量来源排行。地区圆点越大，表示访问次数越多。
+- 公开快照使用地区汇总数字。圆点坐标来自 Natural Earth 的 Admin 1 label points (details)，有地区名称但匹配不到坐标的记录仍显示在地区列表里。地图底图使用 Natural Earth 1:110m 数据，由 World Atlas 2.0.2 转换。<https://www.naturalearthdata.com/downloads/10m-cultural-vectors/10m-admin-1-states-provinces/> <https://github.com/topojson/world-atlas>
+- 来源链接按域名合并，推广链接合并为 `Campaign links`。
 
 ## 新布局与发布修复（2026-10-07）
 
