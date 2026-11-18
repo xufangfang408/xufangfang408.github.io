@@ -65,3 +65,5 @@ redirect_from:
   <div class="section-heading"><h2 id="contact-title">Contact</h2></div>
   <p>Email <a class="contact-email" href="mailto:{{ site.data.academic.email }}">{{ site.data.academic.email }}</a></p>
 </section>
+
+{% include visitor-statistics.html %}

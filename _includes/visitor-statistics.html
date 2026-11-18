@@ -1,0 +1,26 @@
+<section id="visitors" class="section visitor-section" aria-labelledby="visitors-title"
+  data-visitor-stats="https://raw.githubusercontent.com/{{ site.repository | escape }}/visitor-stats/visitor-stats.json"
+  data-visitor-map="{{ '/assets/maps/visitor-world.json' | relative_url }}">
+  <div class="section-heading"><h2 id="visitors-title">Visitor statistics</h2></div>
+  <p class="visitor-period" data-visitor-period role="status">Visit statistics cover the last 30 days.</p>
+  <div class="visitor-grid">
+    <figure class="visitor-figure">
+      <canvas width="960" height="400" aria-label="World map of visits by country or region" role="img"></canvas>
+      <figcaption>
+        <span class="visitor-legend" hidden>Fewer <i aria-hidden="true"></i> More</span>
+        <span data-visitor-place>Visits by country or region</span>
+      </figcaption>
+      <details class="visitor-countries" hidden>
+        <summary>Visits by country or region</summary>
+        <ul data-visitor-countries></ul>
+      </details>
+    </figure>
+    <div class="visitor-sources">
+      <h3>Traffic sources</h3>
+      <p class="muted" data-visitor-source-status>Source totals will appear after the first update.</p>
+      <ul data-visitor-sources hidden></ul>
+    </div>
+  </div>
+  <p class="visitor-credit">Analytics by <a href="https://www.goatcounter.com/">GoatCounter</a> · Map by <a href="https://www.naturalearthdata.com/">Natural Earth</a></p>
+</section>
+<script defer src="{{ '/assets/js/visitor-statistics.js' | relative_url }}?v={{ site.time | date: '%Y%m%d%H%M%S' }}"></script>

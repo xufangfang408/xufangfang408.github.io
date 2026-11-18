@@ -30,6 +30,12 @@
 - 站点从发布这次改动后开始使用 GoatCounter。旧的 Flag Counter 数据单独查看。<https://info.flagcounter.com/dkNY>
 - 页面使用系统 Arial，中文使用系统中文字体。头像的圆形裁切通过 `assets/css/academic-v2.css` 设置，照片源文件可继续用作社交分享图。
 
+### 首页地图与流量来源
+
+- 登录 GoatCounter，从右上角账户菜单进入 **API**，创建仅授予 **Stats** 权限的令牌。将令牌保存在 GitHub 仓库 **Settings → Secrets and variables → Actions**，名称为 `GOATCOUNTER_API_TOKEN`。<https://www.goatcounter.com/help/api>
+- 推送后可在 **Actions → Update visitor statistics** 手动运行一次。之后工作流每 6 小时更新 `visitor-stats` 分支中的 `visitor-stats.json`。主页展示最近 30 天的访问总数、国家或地区，以及流量来源排行。
+- 公共快照只包含汇总数字。来源链接按域名合并，推广链接合并为 `Campaign links`。GoatCounter 仪表盘继续保持私有。地图底图使用 Natural Earth 1:110m 数据，由 World Atlas 2.0.2 转换。<https://github.com/topojson/world-atlas>
+
 ## 新布局与发布修复（2026-10-07）
 
 - 使用宽版布局和本地 Lato 字体，正文 18px。首页集中展示简介、照片和学术链接，内页使用简短信息栏。学术数据、照片和原始 PDF 不变。

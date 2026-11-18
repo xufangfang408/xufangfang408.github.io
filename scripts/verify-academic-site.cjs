@@ -78,6 +78,20 @@ for (const name of pages) {
     assert(talks.some(tag => attribute(tag, 'id') === recentTalkId), 'The recent talk link must point to a published talk');
   }
 
+  const visitorSection = (html.match(/<section\b[^>]*>/gi) || []).find(tag => hasClass(tag, 'visitor-section'));
+  const visitorScripts = (html.match(/<script\b[^>]*>/gi) || [])
+    .filter(tag => attribute(tag, 'src')?.startsWith(baseurl + '/assets/js/visitor-statistics.js?'));
+  if (name === 'index.html') {
+    assert(visitorSection, 'Missing homepage visitor statistics');
+    assert.equal(visitorScripts.length, 1, 'Expected one homepage visitor statistics script');
+    const stats = new URL(attribute(visitorSection, 'data-visitor-stats'));
+    assert.equal(stats.origin, 'https://raw.githubusercontent.com', 'The visitor snapshot must use the public GitHub asset');
+    assert(/\/visitor-stats\/visitor-stats\.json$/.test(stats.pathname), 'Wrong visitor snapshot path');
+    localFile(attribute(visitorSection, 'data-visitor-map'));
+  } else {
+    assert(!visitorSection && !visitorScripts.length, `Visitor statistics must stay on the homepage: ${name}`);
+  }
+
   const styles = (html.match(/<link\b[^>]*>/g) || []).filter(tag => /rel="stylesheet"/.test(tag));
   assert.equal(styles.length, 1, `Expected only the current layout stylesheet in ${name}`);
   const href = styles[0].match(/href="([^"]+)"/)[1];
