@@ -4,55 +4,39 @@
   const section = document.getElementById('visitors');
   if (!section) return;
 
+  const label = section.querySelector('[data-visitor-place]');
   const number = new Intl.NumberFormat('en');
-  const date = new Intl.DateTimeFormat('en', { dateStyle: 'medium', timeZone: 'UTC' });
   const countries = new Intl.DisplayNames('en', { type: 'region' });
 
   function regionLabel({ country, name }) {
     return `${name}, ${countries.of(country)}`;
   }
 
-  function row(label, count, max) {
-    const item = document.createElement('li');
-    const values = document.createElement('div');
-    values.className = 'visitor-stat-row';
-    for (const value of [label, number.format(count)]) {
-      const span = document.createElement('span');
-      span.textContent = value;
-      values.append(span);
-    }
-    item.append(values);
-    if (max) {
-      const bar = document.createElement('div');
-      bar.className = 'visitor-bar';
-      bar.style.width = `${(count / max) * 100}%`;
-      bar.setAttribute('aria-hidden', 'true');
-      item.append(bar);
-    }
-    return item;
+  function formatVisits(count) {
+    return `${number.format(count)} ${count === 1 ? 'visit' : 'visits'}`;
   }
 
-  function renderStats(data) {
-    const period = section.querySelector('[data-visitor-period]');
-    const total = document.createElement('strong');
-    total.textContent = `${number.format(data.total)} ${data.total === 1 ? 'visit' : 'visits'}`;
-    const updated = document.createElement('time');
-    updated.dateTime = data.updatedAt;
-    updated.textContent = date.format(new Date(data.updatedAt));
-    period.replaceChildren(total, ` in the last ${data.days} days · Updated `, updated);
+  function renderSummary({ total, days, regions }) {
+    if (Number.isSafeInteger(total) && total >= 0) {
+      const period = section.querySelector('[data-visitor-period]');
+      const count = document.createElement('strong');
+      count.textContent = formatVisits(total);
+      period.replaceChildren(count, Number.isSafeInteger(days) && days > 0 ? ` in the last ${days} days` : '');
+      period.hidden = false;
+    }
 
-    const regions = data.regions || [];
-    const regionList = section.querySelector('[data-visitor-regions]');
-    regionList.replaceChildren(...regions.map(region => row(regionLabel(region), region.count)));
-    regionList.parentElement.hidden = !regions.length;
-
-    const sources = section.querySelector('[data-visitor-sources]');
-    const sourceStatus = section.querySelector('[data-visitor-source-status]');
-    const max = Math.max(0, ...data.sources.map(([, count]) => count));
-    sources.replaceChildren(...data.sources.map(([name, count]) => row(name, count, max)));
-    sources.hidden = !data.sources.length;
-    sourceStatus.hidden = data.sources.length > 0;
-    sourceStatus.textContent = 'No traffic sources recorded in this period.';
+    if (!regions?.length) return;
+    const list = section.querySelector('[data-visitor-regions]');
+    for (const region of regions) {
+      const item = document.createElement('li');
+      const place = document.createElement('span');
+      const count = document.createElement('span');
+      place.textContent = regionLabel(region);
+      count.textContent = number.format(region.count);
+      item.append(place, count);
+      list.append(item);
+    }
+    list.parentElement.hidden = false;
   }
 
   function drawMap(map, data) {
@@ -69,7 +53,7 @@
     let drag;
     let dragged = false;
     const regions = data?.regions || [];
-    const markers = regions.filter(region => region.coordinates).map(region => {
+    const markers = regions.filter(region => region.coordinates && region.count > 0).map(region => {
       const [longitude, latitude] = region.coordinates;
       return {
         ...region,
@@ -77,8 +61,8 @@
         y: (84 - latitude) / 150 * map.height
       };
     }).sort((a, b) => b.count - a.count);
-    const max = markers[0]?.count || 0;
-    const label = section.querySelector('[data-visitor-place]');
+    // Keep low-traffic snapshots from making their largest dot full size.
+    const scalePeak = Math.max(25, markers[0]?.count || 0);
     let labelDefault = 'Visits by region';
     if (markers.length) labelDefault = 'Hover or tap a dot for details.';
     else if (regions.length) labelDefault = 'Map coordinates are unavailable for these regions.';
@@ -104,7 +88,10 @@
     }
 
     function radius(count, unitsPerPixel) {
-      return (2.5 + Math.min(13, canvas.clientWidth / 40) * Math.sqrt(count / max)) * unitsPerPixel;
+      const minRadius = 2;
+      const maxRadius = Math.max(minRadius, Math.min(10, canvas.clientWidth * 0.018));
+      const share = (count - 1) / (scalePeak - 1);
+      return Math.sqrt(minRadius ** 2 + (maxRadius ** 2 - minRadius ** 2) * share) * unitsPerPixel;
     }
 
     function paint() {
@@ -174,7 +161,7 @@
         }
       }
       label.textContent = nearest
-        ? `${regionLabel(nearest)} · ${number.format(nearest.count)} ${nearest.count === 1 ? 'visit' : 'visits'}`
+        ? `${regionLabel(nearest)} · ${formatVisits(nearest.count)}`
         : labelDefault;
     }
     zoomIn.addEventListener('click', () => changeZoom(zoom * 2));
@@ -220,26 +207,25 @@
 
   async function load() {
     const [map, stats] = await Promise.allSettled([json(section.dataset.visitorMap), json(section.dataset.visitorStats)]);
-    const period = section.querySelector('[data-visitor-period]');
-    let data;
-    if (stats.status === 'fulfilled') {
-      data = stats.value;
-      renderStats(data);
-    } else {
-      period.textContent = stats.reason.message === '404'
-        ? 'Visit totals will appear after the first update.'
-        : 'Visitor statistics are temporarily unavailable.';
-      section.querySelector('[data-visitor-source-status]').textContent = 'No source totals to display.';
+    const data = stats.status === 'fulfilled' ? stats.value : undefined;
+    if (data) renderSummary(data);
+    if (map.status === 'rejected') {
+      label.textContent = 'The map is temporarily unavailable.';
+      return;
     }
-    if (map.status === 'fulfilled') drawMap(map.value, data);
-    else section.querySelector('[data-visitor-place]').textContent = 'The map is temporarily unavailable.';
+    drawMap(map.value, data);
+    if (stats.status === 'rejected') {
+      label.textContent = stats.reason.message === '404'
+        ? 'Regional visits will appear after the first update.'
+        : 'Regional visits are temporarily unavailable.';
+    }
   }
 
   const observer = new IntersectionObserver(entries => {
     if (!entries.some(entry => entry.isIntersecting)) return;
     observer.disconnect();
     load().catch(() => {
-      section.querySelector('[data-visitor-period]').textContent = 'Visitor statistics are temporarily unavailable.';
+      label.textContent = 'The map is temporarily unavailable.';
     });
   }, { rootMargin: '250px' });
   observer.observe(section);

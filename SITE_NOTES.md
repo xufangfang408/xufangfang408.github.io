@@ -30,12 +30,12 @@
 - 站点从发布这次改动后开始使用 GoatCounter。旧的 Flag Counter 数据单独查看。<https://info.flagcounter.com/dkNY>
 - 页面使用系统 Arial，中文使用系统中文字体。头像的圆形裁切通过 `assets/css/academic-v2.css` 设置，照片源文件可继续用作社交分享图。
 
-### 首页地图与流量来源
+### 首页访客地图
 
 - 登录 GoatCounter，从右上角账户菜单进入 **API**，创建仅授予 **Stats** 权限的令牌。将令牌保存在 GitHub 仓库 **Settings → Secrets and variables → Actions**，名称为 `GOATCOUNTER_API_TOKEN`。<https://www.goatcounter.com/help/api>
 - 在 GoatCounter 的 **Settings → Data collection** 中确认已启用 **Region**。国家列表留空时适用于所有国家。地区统计的粒度是省、州等一级行政区，启用后开始记录。
-- 推送后可在 **Actions → Update visitor statistics** 手动运行一次。之后工作流每 6 小时更新 `visitor-stats` 分支中的 `visitor-stats.json`。主页展示最近 30 天的访问总数、地区圆点和流量来源排行。地区圆点越大，表示访问次数越多。
-- 公开快照使用地区汇总数字。圆点坐标来自 Natural Earth 的 Admin 1 label points (details)，有地区名称但匹配不到坐标的记录仍显示在地区列表里。地图底图使用 Natural Earth 1:110m 数据，由 World Atlas 2.0.2 转换。<https://www.naturalearthdata.com/downloads/10m-cultural-vectors/10m-admin-1-states-provinces/> <https://github.com/topojson/world-atlas>
+- 推送后可在 **Actions → Update visitor statistics** 手动运行一次。之后工作流每 6 小时更新 `visitor-stats` 分支中的 `visitor-stats.json`。首页地图展示最近 30 天各地区的相对访问量。圆点按当前访问量分布缩放，最大尺寸随地图宽度调整。地图下方显示访问总数和默认折叠的地区列表。
+- 圆点坐标来自 Natural Earth 的 Admin 1 label points (details)。地图底图使用 Natural Earth 1:110m 数据，由 World Atlas 2.0.2 转换。<https://www.naturalearthdata.com/downloads/10m-cultural-vectors/10m-admin-1-states-provinces/> <https://github.com/topojson/world-atlas>
 - 来源链接按域名合并，推广链接合并为 `Campaign links`。
 
 ## 新布局与发布修复（2026-10-07）
