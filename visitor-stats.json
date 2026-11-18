@@ -1,0 +1,57 @@
+{
+  "days": 30,
+  "updatedAt": "2026-11-18T13:00:00.000Z",
+  "total": 13,
+  "countries": [
+    [
+      "CN",
+      6
+    ],
+    [
+      "JP",
+      5
+    ],
+    [
+      "HK",
+      1
+    ],
+    [
+      "US",
+      1
+    ]
+  ],
+  "regions": [
+    {
+      "country": "CN",
+      "name": "Guangdong",
+      "count": 1,
+      "coordinates": [
+        113.72,
+        23.792
+      ]
+    },
+    {
+      "country": "US",
+      "name": "Utah",
+      "count": 1,
+      "coordinates": [
+        -111.544,
+        39.501
+      ]
+    }
+  ],
+  "sources": [
+    [
+      "xufangfang408.github.io",
+      6
+    ],
+    [
+      "weixin110.qq.com",
+      4
+    ],
+    [
+      "Direct or unknown",
+      3
+    ]
+  ]
+}
