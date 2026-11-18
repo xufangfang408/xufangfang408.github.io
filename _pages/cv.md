@@ -6,11 +6,8 @@ redirect_from:
   - /resume
 ---
 <div class="page-heading">
-  <div>
-    <h1>Curriculum Vitae</h1>
-    <p class="page-lead">Education, research experience, and selected honors.</p>
-  </div>
-  <a class="button" href="{{ site.data.academic.cv | relative_url }}">Download full CV <span class="file-label">PDF</span> <span aria-hidden="true">↓</span></a>
+  <h1>Curriculum Vitae</h1>
+  <a href="{{ site.data.academic.cv | relative_url }}">Download CV (PDF)</a>
 </div>
 <section class="section">
   <div class="section-heading"><h2>Research interests</h2></div>

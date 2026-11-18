@@ -160,14 +160,11 @@ analytics:
   google:
     tracking_id          :
 
-# Homepage visitor map. These public URLs belong to this site's Flag Counter.
-# Keep the image URL unchanged so visits continue to use the same counter.
-visitor_map:
-  enabled: true
-  image_url: "https://s01.flagcounter.com/map/dkNY/size_m/txt_606975/border_FFFFFF/pageviews_1/viewers_3/flags_0/"
-  stats_url: "https://info.flagcounter.com/dkNY"
-  width: 600
-  height: 291
+# GoatCounter site code from <code>.goatcounter.com. An empty code disables analytics.
+goatcounter:
+  code: "xufangfang408"
+  # Set to true after enabling public access to your dashboard in GoatCounter.
+  public_dashboard: false
 
 
 # Reading Files
@@ -206,7 +203,6 @@ exclude:
   - "_pages/portfolio.html"
   - "_pages/tag-archive.html"
   - "_pages/talkmap.html"
-  - "_pages/talks.html"
   - "_pages/teaching.html"
   - "_pages/terms.md"
   - "_pages/year-archive.html"

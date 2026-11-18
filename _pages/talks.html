@@ -1,16 +1,28 @@
 ---
-layout: archive
-title: "Talks and presentations"
+layout: academic
+title: Talks
+description: "Academic talks and conference presentations by Fangfang Xu."
 permalink: /talks/
-author_profile: true
 ---
 
-{% if site.talkmap_link == true %}
+<h1>Talks</h1>
 
-<p style="text-decoration:underline;"><a href="/talkmap.html">See a map of all the places I've given a talk!</a></p>
-
-{% endif %}
-
-{% for post in site.talks reversed %}
-  {% include archive-single-talk.html %}
+{% assign talks_by_year = site.data.talks | sort: 'year' | reverse | group_by: 'year' %}
+{% for year in talks_by_year %}
+<section class="section" aria-labelledby="talks-{{ year.name }}">
+  <div class="section-heading"><h2 id="talks-{{ year.name }}">{{ year.name }}</h2></div>
+  <div class="entry-list">
+    {% for talk in year.items %}
+    <article class="talk" id="{{ talk.id | escape }}">
+      <h3>{{ talk.title | escape }}</h3>
+      <p>{{ talk.event | escape }}</p>
+      <p class="muted">{{ talk.location | escape }}</p>
+      {% if talk.event_zh %}
+      <p class="muted" lang="zh-Hans">{{ talk.event_zh | escape }}{% if talk.location_zh %} · {{ talk.location_zh | escape }}{% endif %}</p>
+      {% endif %}
+      {% if talk.preprint %}<p class="entry-links"><a href="{{ talk.preprint | escape }}">Related preprint</a></p>{% endif %}
+    </article>
+    {% endfor %}
+  </div>
+</section>
 {% endfor %}

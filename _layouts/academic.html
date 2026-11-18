@@ -6,7 +6,6 @@
     <title>{% if page.url != '/' %}{{ page.title | escape }} | {% endif %}{{ site.title | escape }}</title>
     <meta name="description" content="{{ page.description | default: site.description | escape }}">
     <meta name="theme-color" content="#ffffff">
-    {% if page.url == '/' %}<meta name="visitor-map-enabled" content="{% if site.visitor_map.enabled %}true{% else %}false{% endif %}">{% endif %}
     <script>
       (function () {
         var saved = null;
@@ -14,51 +13,59 @@
         var theme = saved === "light" || saved === "dark" ? saved : (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
         document.documentElement.setAttribute("data-theme", theme);
         var meta = document.querySelector('meta[name="theme-color"]');
-        if (meta) meta.setAttribute("content", theme === "dark" ? "#171d28" : "#ffffff");
+        if (meta) meta.setAttribute("content", theme === "dark" ? "#181a1c" : "#ffffff");
       })();
     </script>
     <link rel="canonical" href="{{ page.url | absolute_url }}">
     <meta property="og:type" content="website">
     <meta property="og:title" content="{{ page.title | default: site.title | escape }}">
-    <meta property="og:description" content="{{ site.description | escape }}">
+    <meta property="og:description" content="{{ page.description | default: site.description | escape }}">
     <meta property="og:url" content="{{ page.url | absolute_url }}">
     <meta property="og:image" content="{{ site.data.academic.portrait | absolute_url }}">
     <link rel="icon" type="image/svg+xml" href="{{ '/images/fx-monogram.svg' | relative_url }}">
-    <link rel="preload" href="{{ '/assets/fonts/lato-latin-regular.woff2' | relative_url }}" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="{{ '/assets/css/academic-v2.css' | relative_url }}?v={{ site.time | date: '%Y%m%d%H%M%S' }}">
+    {% assign goatcounter_code = site.goatcounter.code | default: '' | strip | downcase %}
+    {% if jekyll.environment == 'production' and goatcounter_code != '' %}
+      {% assign analytics_url = 'https://' | append: goatcounter_code | append: '.goatcounter.com' %}
+      <script data-goatcounter="{{ analytics_url | escape }}/count" async src="{{ '/assets/js/goatcounter-count.js' | relative_url }}"></script>
+    {% endif %}
   </head>
-  <body{% if page.url == '/' %} class="academic-v2 is-home"{% else %} class="academic-v2 is-page"{% endif %}>
+  <body class="academic-v2">
     {% assign person = site.data.academic %}
     <a class="skip-link" href="#main">Skip to content</a>
     <header class="site-header">
       <div class="header-inner">
-        <a class="home-mark" href="{{ '/' | relative_url }}" aria-label="{{ person.name | escape }} home">fx<span aria-hidden="true">.</span></a>
+        <a class="site-name" href="{{ '/' | relative_url }}"{% if page.url == '/' %} aria-current="page"{% endif %}>{{ person.name }}</a>
         <nav aria-label="Main navigation">
           {% for link in site.data.navigation.main %}
           <a href="{{ link.url | relative_url }}"{% if page.url == link.url %} aria-current="page"{% endif %}>{{ link.title }}</a>
           {% endfor %}
-          <button type="button" class="theme-toggle" aria-pressed="false" aria-label="Switch to dark theme">
-            <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" d="M16.5 3.5a8.5 8.5 0 1 0 4 10.5A7 7 0 0 1 16.5 3.5z"/></svg>
-            <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M18.4 5.6 17 7M7 17l-1.4 1.4"/></svg>
-          </button>
         </nav>
+        <button type="button" class="theme-toggle" aria-pressed="false" aria-label="Switch to dark theme">
+          <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" d="M16.5 3.5a8.5 8.5 0 1 0 4 10.5A7 7 0 0 1 16.5 3.5z"/></svg>
+          <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M18.4 5.6 17 7M7 17l-1.4 1.4"/></svg>
+        </button>
       </div>
     </header>
     <div class="site-shell">
-      {% unless page.url == '/' %}
-      <div class="identity-bar" aria-label="Profile and contact">
-        <a href="{{ '/' | relative_url }}" aria-label="{{ person.name | escape }} home"><img src="{{ person.portrait | relative_url }}" alt="Portrait of {{ person.name | escape }}" width="64" height="64"></a>
-        <div class="identity-info">
-          <a class="identity-name" href="{{ '/' | relative_url }}">{{ person.name }} <span lang="zh-Hans">{{ person.name_zh }}</span></a>
-          <p>{{ person.role }} · {{ person.field }}<br>{{ person.institution }} · {{ person.location }}</p>
+      <aside class="site-profile" aria-label="Profile and contact">
+        <div class="portrait-frame">
+          <img class="portrait" src="{{ person.portrait | relative_url }}" alt="Portrait of {{ person.name | escape }}" width="800" height="800" fetchpriority="high">
+        </div>
+        <div class="profile-bio">
+          <p class="profile-name">{{ person.name }} <span lang="zh-Hans">{{ person.name_zh }}</span></p>
+          <p>{{ person.role }}<br>{{ person.institution }}<br>{{ person.location }}</p>
         </div>
         {% include academic-links.html %}
-      </div>
-      {% endunless %}
+      </aside>
       <main id="main" class="main-content" tabindex="-1">{{ content }}</main>
     </div>
     <footer class="site-footer">
-      <div><span>© {{ 'now' | date: '%Y' }} {{ person.name }}</span><span>Built with <a href="https://jekyllrb.com/">Jekyll</a> · <a href="https://github.com/academicpages/academicpages.github.io">Academic Pages</a></span></div>
+      <div>
+        <span>© {{ 'now' | date: '%Y' }} {{ person.name }}</span>
+        {% if analytics_url and site.goatcounter.public_dashboard %}<a class="visitor-statistics" href="{{ analytics_url | escape }}">Visitor statistics</a>{% endif %}
+        <span>Built with <a href="https://jekyllrb.com/">Jekyll</a> · <a href="https://github.com/academicpages/academicpages.github.io">Academic Pages</a></span>
+      </div>
     </footer>
     <script>
       (function () {
@@ -70,7 +77,7 @@
         function paint(theme) {
           document.documentElement.setAttribute("data-theme", theme);
           var meta = document.querySelector('meta[name="theme-color"]');
-          if (meta) meta.setAttribute("content", theme === "dark" ? "#171d28" : "#ffffff");
+          if (meta) meta.setAttribute("content", theme === "dark" ? "#181a1c" : "#ffffff");
           if (!button) return;
           var dark = theme === "dark";
           button.setAttribute("aria-pressed", dark ? "true" : "false");

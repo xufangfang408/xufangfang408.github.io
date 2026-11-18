@@ -5,11 +5,14 @@ const path = require('node:path');
 // Run after Jekyll builds, so missing or mismatched published assets fail CI.
 const output = path.resolve(process.argv[2] || '_site');
 const baseurl = (process.argv[3] || '').replace(/\/$/, '');
-const pages = ['index.html', 'publications/index.html', 'cv/index.html', 'sitemap/index.html', '404.html'];
+const talksPage = 'talks/index.html';
+const talksUrl = baseurl + '/talks/';
+const pages = ['index.html', 'publications/index.html', talksPage, 'cv/index.html', 'sitemap/index.html', '404.html'];
 const expectedStylesheet = '/assets/css/academic-v2.css';
-const expectedMapScript = '/assets/js/visitor-map.js';
+const analyticsScript = baseurl + '/assets/js/goatcounter-count.js';
 let stylesheetUrl;
-let hasVisitorMap = false;
+let analyticsEndpoint;
+let recentTalkId;
 
 function attribute(tag, name) {
   const match = tag.match(new RegExp(`(?:^|\\s)${name}\\s*=\\s*(["'])(.*?)\\1`, 'i'));
@@ -20,65 +23,26 @@ function hasClass(tag, name) {
   return (attribute(tag, 'class') || '').split(/\s+/).includes(name);
 }
 
-function httpsUrl(value, description) {
-  assert(value && /^https:\/\//i.test(value), `${description} must use an absolute HTTPS URL`);
-  const url = new URL(value);
-  assert.equal(url.protocol, 'https:', `${description} must use HTTPS`);
-  return url;
-}
-
-function verifyVisitorMap(html, name) {
-  const sections = [...html.matchAll(/<section\b[^>]*>[\s\S]*?<\/section>/gi)]
-    .map(match => match[0])
-    .filter(section => hasClass(section.match(/^<section\b[^>]*>/i)[0], 'visitor-section'));
-  const figures = (html.match(/<figure\b[^>]*>/gi) || [])
-    .filter(tag => /\bdata-visitor-map(?:\s|=|>)/i.test(tag));
-  const images = (html.match(/<img\b[^>]*>/gi) || [])
-    .filter(tag => hasClass(tag, 'visitor-map-image'));
+function verifyAnalytics(html, name) {
+  assert(!/flagcounter\.com|visitor-map\.js/i.test(html), `Retired visitor counter in ${name}`);
   const scripts = (html.match(/<script\b[^>]*>/gi) || [])
-    .filter(tag => {
-      const src = attribute(tag, 'src');
-      return src && new URL(src, 'https://example.test').pathname.endsWith(expectedMapScript);
-    });
+    .filter(tag => attribute(tag, 'data-goatcounter') || attribute(tag, 'src') === analyticsScript);
+  assert(scripts.length <= 1, `Duplicate GoatCounter script in ${name}`);
+  const endpoint = scripts.length ? attribute(scripts[0], 'data-goatcounter') : null;
 
-  if (name !== 'index.html') {
-    assert.equal(sections.length + figures.length + images.length + scripts.length, 0,
-      `The visitor map must appear only on the homepage: ${name}`);
-    return;
+  if (scripts.length) {
+    assert.equal(attribute(scripts[0], 'src'), analyticsScript, `Wrong GoatCounter script in ${name}`);
+    assert(/\sasync[\s>]/.test(scripts[0]), `GoatCounter must load asynchronously in ${name}`);
+    assert(/^https:\/\/[a-z0-9-]+\.goatcounter\.com\/count$/.test(endpoint || ''), `Invalid GoatCounter endpoint in ${name}`);
   }
+  if (name === 'index.html') analyticsEndpoint = endpoint;
+  assert.equal(endpoint, analyticsEndpoint, `Inconsistent GoatCounter setup in ${name}`);
 
-  // Use the rendered setting so --config overrides and disabled builds are verified correctly.
-  const settingTags = (html.match(/<meta\b[^>]*>/gi) || []).filter(tag => attribute(tag, 'name') === 'visitor-map-enabled');
-  assert.equal(settingTags.length, 1, 'Expected one rendered visitor-map enabled setting on the homepage');
-  const setting = attribute(settingTags[0], 'content');
-  assert(['true', 'false'].includes(setting), 'Invalid rendered visitor-map enabled setting');
-  hasVisitorMap = setting === 'true';
-  const expectedCount = hasVisitorMap ? 1 : 0;
-  assert.equal(sections.length, expectedCount, 'Expected one visitor section when enabled, and none when disabled');
-  assert.equal(figures.length, expectedCount, 'Expected one visitor figure when enabled, and none when disabled');
-  assert.equal(images.length, expectedCount, 'Expected one visitor image when enabled, and none when disabled');
-  assert.equal(scripts.length, expectedCount, 'Expected one visitor-map script when enabled, and none when disabled');
-  if (!hasVisitorMap) return;
-
-  const section = sections[0];
-  assert(section.includes(figures[0]) && section.includes(images[0]), 'The map figure and image must stay inside the visitor section');
-  httpsUrl(attribute(images[0], 'src'), 'Visitor map image');
-  for (const dimension of ['width', 'height']) {
-    const value = attribute(images[0], dimension);
-    assert(value && /^\d+$/.test(value) && Number(value) > 0, `Visitor map must reserve a positive ${dimension}`);
+  const dashboard = (html.match(/<a\b[^>]*>/gi) || []).find(tag => hasClass(tag, 'visitor-statistics'));
+  if (dashboard) {
+    assert(endpoint, `Dashboard link without GoatCounter script in ${name}`);
+    assert.equal(attribute(dashboard, 'href'), new URL(endpoint).origin, `Wrong GoatCounter dashboard link in ${name}`);
   }
-  const links = (section.match(/<a\b[^>]*>/gi) || []).map(tag => attribute(tag, 'href'));
-  assert(links.length > 0, 'The visitor map must link to its statistics');
-  for (const href of links) httpsUrl(href, 'Visitor statistics link');
-
-  const src = attribute(scripts[0], 'src');
-  assert(src.startsWith(baseurl + '/') && !src.startsWith('//'), 'The visitor-map script must use a local asset URL');
-  const scriptUrl = new URL(src, 'https://example.test');
-  assert.equal(scriptUrl.pathname, baseurl + expectedMapScript, 'Wrong visitor-map script URL');
-  assert(/^\d{14}$/.test(scriptUrl.searchParams.get('v') || ''), 'Missing visitor-map script build version');
-  assert.equal(scriptUrl.searchParams.get('v'), new URL(stylesheetUrl, 'https://example.test').searchParams.get('v'),
-    'The visitor-map script and stylesheet must use the same build version');
-  localFile(src);
 }
 
 function localFile(url) {
@@ -93,9 +57,26 @@ function localFile(url) {
 for (const name of pages) {
   const html = fs.readFileSync(path.join(output, name), 'utf8');
   assert(!/\{%|\{\{/.test(html), `Unrendered Liquid in ${name}`);
-  assert(/<body[^>]+class="academic-v2\s/.test(html), `Wrong layout in ${name}`);
-  assert(!/<aside\b[^>]+class="profile"/.test(html), `Legacy sidebar in ${name}`);
+  assert(hasClass(html.match(/<body\b[^>]*>/i)?.[0] || '', 'academic-v2'), `Wrong layout in ${name}`);
+  assert.equal((html.match(/<aside\b[^>]+class="site-profile"/g) || []).length, 1, `Expected one academic profile in ${name}`);
   assert.equal((html.match(/<h1\b/g) || []).length, 1, `Expected one main heading in ${name}`);
+
+  const nav = html.match(/<nav\b[^>]*>[\s\S]*?<\/nav>/i)?.[0] || '';
+  const talksLink = (nav.match(/<a\b[^>]*>/gi) || []).find(tag => attribute(tag, 'href') === talksUrl);
+  assert(talksLink, `Missing Talks navigation link in ${name}`);
+  assert.equal(attribute(talksLink, 'aria-current'), name === talksPage ? 'page' : null,
+    `Wrong active state for Talks navigation link in ${name}`);
+
+  if (name === 'index.html') {
+    const hrefs = (html.match(/<a\b[^>]*>/gi) || []).map(tag => attribute(tag, 'href'));
+    const recentTalkLink = hrefs.find(href => href?.startsWith(talksUrl + '#'));
+    assert(recentTalkLink, 'Missing recent talk link on the homepage');
+    recentTalkId = new URL(recentTalkLink, 'https://example.test').hash.slice(1);
+  }
+  if (name === talksPage) {
+    const talks = (html.match(/<article\b[^>]*>/gi) || []).filter(tag => hasClass(tag, 'talk'));
+    assert(talks.some(tag => attribute(tag, 'id') === recentTalkId), 'The recent talk link must point to a published talk');
+  }
 
   const styles = (html.match(/<link\b[^>]*>/g) || []).filter(tag => /rel="stylesheet"/.test(tag));
   assert.equal(styles.length, 1, `Expected only the current layout stylesheet in ${name}`);
@@ -111,19 +92,17 @@ for (const name of pages) {
     const asset = attribute(tag, 'src') || attribute(tag, 'href');
     if (asset && asset.startsWith('/')) localFile(asset);
   }
-  verifyVisitorMap(html, name);
+  verifyAnalytics(html, name);
 }
 
 const stylesheet = localFile(stylesheetUrl);
 const css = fs.readFileSync(stylesheet, 'utf8');
 assert(css.includes('Academic layout v2'), 'The stylesheet contains a different layout');
-assert(/\.site-shell\s*\{[^}]*display:\s*block/.test(css), 'The main shell must use the full page width');
-assert(/\.main-content\s*\{[^}]*width:\s*100%/.test(css), 'Main content must not fall into the old sidebar column');
 for (const match of css.matchAll(/url\(["']?([^"')]+)["']?\)/g)) {
   if (/^(?:data:|https?:)/.test(match[1])) continue;
-  const font = path.resolve(path.dirname(stylesheet), match[1]);
-  assert(fs.existsSync(font), `Missing local font: ${match[1]}`);
+  const asset = path.resolve(path.dirname(stylesheet), match[1]);
+  assert(fs.existsSync(asset), `Missing stylesheet asset: ${match[1]}`);
 }
 
 assert(fs.readFileSync(localFile(baseurl + '/files/Fangfang-Xu-CV.pdf')).subarray(0, 5).toString() === '%PDF-', 'The published CV must be a PDF');
-console.log(`Verified ${pages.length} generated pages, versioned layout assets, local fonts, portrait, CV, and ${hasVisitorMap ? 'homepage visitor map' : 'disabled visitor map'}.`);
+console.log(`Verified ${pages.length} generated pages, Talks navigation, versioned layout, portrait, CV, and ${analyticsEndpoint ? 'GoatCounter tracking' : 'disabled analytics'}.`);

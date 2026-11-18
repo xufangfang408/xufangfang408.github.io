@@ -1,13 +1,10 @@
-<div class="projects">
+<div class="entry-list projects">
 {% for project in site.data.academic.projects %}
   <article class="project">
-    <div class="project-heading">
-      <h3>{{ project.name }}</h3>
-      <span class="status status-quiet">In progress</span>
-    </div>
-    <p class="project-subtitle">{{ project.subtitle }}</p>
-    <p class="item-date">{{ project.period }}</p>
-    <p>{{ project.description }}</p>
+    <h3>{{ project.name | escape }}</h3>
+    <p>{{ project.subtitle | escape }}</p>
+    <p class="item-date">{{ project.period | escape }}</p>
+    <p class="project-description">{{ project.description | escape }}</p>
   </article>
 {% endfor %}
 </div>

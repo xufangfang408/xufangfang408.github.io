@@ -9,39 +9,47 @@ redirect_from:
 ---
 
 <section class="intro" aria-labelledby="about-title">
-  <div class="intro-copy">
-  <p class="eyebrow">Computational biology · Spatial omics · AI</p>
-  <h1 id="about-title">{{ site.data.academic.name }} <span lang="zh-Hans">{{ site.data.academic.name_zh }}</span></h1>
-  <p class="intro-lead"><em>Work on things that matter.</em></p>
-  <p>I am a master's student in <strong>Computer Science and Technology at Xiamen University</strong>, specializing in Health Big Data and Intelligent Medicine. I am fortunate to be jointly advised by <a href="https://scholar.google.com/citations?user=jyQyHPoAAAAJ&amp;hl=en" target="_blank" rel="noopener noreferrer"><strong>Chaoyong Yang,</strong></a> <a href="https://scholar.google.com/citations?user=3wJ4fPkAAAAJ&amp;hl=en" target="_blank" rel="noopener noreferrer"><strong>Liansheng Wang</strong></a> and <a href="https://scholar.google.com/citations?user=NV3pnwsAAAAJ&amp;hl=en" target="_blank" rel="noopener noreferrer"><strong>Jia Song</strong></a>.</p>
-  <p>My research interests center on <strong>multimodal modeling of biological systems</strong> and <strong>perturbation-response prediction</strong>. I am particularly interested in developing computational models that learn biological states from multimodal measurements and predict how cells and tissues respond to genetic and chemical perturbations.</p>
-  {% include academic-links.html %}
-  </div>
-  <figure class="intro-portrait">
-    <img class="portrait" src="{{ site.data.academic.portrait | relative_url }}" alt="Portrait of {{ site.data.academic.name | escape }}" width="400" height="400" fetchpriority="high">
-    <figcaption>{{ site.data.academic.role }}<br>{{ site.data.academic.location }}</figcaption>
-  </figure>
+  <h1 id="about-title">About</h1>
+  <p>I am a master's student in <strong>Computer Science and Technology at Xiamen University</strong>, specializing in Health Big Data and Intelligent Medicine. My advisors are <a href="https://scholar.google.com/citations?user=jyQyHPoAAAAJ&amp;hl=en" target="_blank" rel="noopener noreferrer">Chaoyong Yang</a>, <a href="https://scholar.google.com/citations?user=3wJ4fPkAAAAJ&amp;hl=en" target="_blank" rel="noopener noreferrer">Liansheng Wang</a>, and <a href="https://scholar.google.com/citations?user=NV3pnwsAAAAJ&amp;hl=en" target="_blank" rel="noopener noreferrer">Jia Song</a>.</p>
+  <p>I develop computational models that integrate spatial omics and histopathology to characterize biological states. I am interested in using these models to predict how cells and tissues respond to genetic and chemical perturbations.</p>
 </section>
 
 <section id="research" class="section" aria-labelledby="research-title">
   <div class="section-heading"><h2 id="research-title">Research interests</h2></div>
-  <p class="section-intro">I am interested in predictive and interventional computational biology, with three connected directions:</p>
-  <div class="interests">
+  <ul class="interests">
     {% for interest in site.data.academic.interests %}
-    <article><h3>{{ interest.title }}</h3><p>{{ interest.description }}</p></article>
+    <li><strong>{{ interest.title | escape }}</strong><br>{{ interest.description | escape }}</li>
     {% endfor %}
-  </div>
+  </ul>
 </section>
 
 <section id="publications" class="section" aria-labelledby="publication-title">
-  <div class="section-heading"><h2 id="publication-title">Selected publication</h2></div>
-  {% include academic-publication.html %}
+  <div class="section-heading">
+    <h2 id="publication-title">Selected publication</h2>
+    <a href="{{ '/publications/' | relative_url }}">All publications</a>
+  </div>
+  {% include academic-publication.html compact=true %}
 </section>
 
 <section id="projects" class="section" aria-labelledby="projects-title">
   <div class="section-heading"><h2 id="projects-title">Ongoing research</h2></div>
   {% include academic-projects.html %}
 </section>
+
+{% assign latest_talk = site.data.talks | sort: 'year' | last %}
+{% if latest_talk %}
+<section id="talks" class="section" aria-labelledby="recent-talk-title">
+  <div class="section-heading">
+    <h2 id="recent-talk-title">Recent talk</h2>
+    <a href="{{ '/talks/' | relative_url }}">All talks</a>
+  </div>
+  <article class="talk">
+    <h3><a href="{{ '/talks/' | relative_url }}#{{ latest_talk.id | escape }}">{{ latest_talk.title | escape }}</a></h3>
+    <p>{{ latest_talk.event | escape }}</p>
+    <p class="muted">{{ latest_talk.location | escape }}</p>
+  </article>
+</section>
+{% endif %}
 
 <section id="education" class="section" aria-labelledby="education-title">
   <div class="section-heading"><h2 id="education-title">Education</h2></div>
@@ -53,11 +61,7 @@ redirect_from:
   {% include academic-honors.html %}
 </section>
 
-<section id="contact" class="contact-section" aria-labelledby="contact-title">
-  <p class="eyebrow">Contact</p>
-  <h2 id="contact-title">Let's connect.</h2>
-  <p>For research conversations and academic inquiries, please reach out by email.</p>
-  <a class="contact-email" href="mailto:{{ site.data.academic.email }}">{{ site.data.academic.email }} <span aria-hidden="true">↗</span></a>
+<section id="contact" class="section" aria-labelledby="contact-title">
+  <div class="section-heading"><h2 id="contact-title">Contact</h2></div>
+  <p>Email <a class="contact-email" href="mailto:{{ site.data.academic.email }}">{{ site.data.academic.email }}</a></p>
 </section>
-
-{% include visitor-map.html %}
