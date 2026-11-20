@@ -1,15 +1,15 @@
 {
   "days": 30,
-  "updatedAt": "2026-11-19T07:00:00.000Z",
-  "total": 21,
+  "updatedAt": "2026-11-20T06:00:00.000Z",
+  "total": 27,
   "countries": [
+    [
+      "JP",
+      12
+    ],
     [
       "CN",
       9
-    ],
-    [
-      "JP",
-      6
     ],
     [
       "HK",
@@ -52,11 +52,11 @@
   "sources": [
     [
       "xufangfang408.github.io",
-      11
+      14
     ],
     [
       "Direct or unknown",
-      5
+      8
     ],
     [
       "weixin110.qq.com",
