@@ -1,7 +1,7 @@
 {
   "days": 30,
-  "updatedAt": "2026-11-20T06:00:00.000Z",
-  "total": 27,
+  "updatedAt": "2026-11-20T07:00:00.000Z",
+  "total": 28,
   "countries": [
     [
       "JP",
@@ -9,7 +9,7 @@
     ],
     [
       "CN",
-      9
+      10
     ],
     [
       "HK",
@@ -40,6 +40,15 @@
       ]
     },
     {
+      "country": "CN",
+      "name": "Hubei",
+      "count": 1,
+      "coordinates": [
+        112.264,
+        30.986
+      ]
+    },
+    {
       "country": "US",
       "name": "Utah",
       "count": 1,
@@ -56,7 +65,7 @@
     ],
     [
       "Direct or unknown",
-      8
+      9
     ],
     [
       "weixin110.qq.com",
