@@ -64,13 +64,64 @@ async function snapshot(origin, token, now = new Date(), fetchStats = fetch) {
   let nextRequest = 0;
 
   async function get(kind, query = {}) {
-    if (nextRequest > Date.now()) await delay(nextRequest - Date.now());
     const url = new URL(`/api/v0/stats/${kind}`, origin);
     url.search = new URLSearchParams({ ...period, ...query });
-    nextRequest = Date.now() + 300;
-    const response = await fetchStats(url, { headers, redirect: 'error', signal: AbortSignal.timeout(30_000) });
-    if (!response.ok) throw new Error(`GoatCounter ${kind} returned HTTP ${response.status}`);
-    return response.json();
+    const maxAttempts = 5;
+    const retryableStatuses = new Set([404, 408, 425, 429, 500, 502, 503, 504]);
+
+    for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+      if (nextRequest > Date.now()) await delay(nextRequest - Date.now());
+      nextRequest = Date.now() + 300;
+
+      let response;
+      try {
+        response = await fetchStats(url, {
+          headers,
+          redirect: 'error',
+          signal: AbortSignal.timeout(30_000)
+        });
+      } catch (error) {
+        if (attempt === maxAttempts) {
+          throw new Error(
+            `GoatCounter ${kind} request failed after ${attempt} attempts: ${error.message}`,
+            { cause: error }
+          );
+        }
+        const waitMs = Math.min(1_000 * 2 ** (attempt - 1), 15_000);
+        console.warn(
+          `GoatCounter ${kind} request failed (${error.message}); retrying in ${waitMs / 1_000}s (${attempt}/${maxAttempts - 1})`
+        );
+        await delay(waitMs);
+        continue;
+      }
+
+      if (response.ok) return response.json();
+
+      if (!retryableStatuses.has(response.status) || attempt === maxAttempts) {
+        throw new Error(
+          `GoatCounter ${kind} returned HTTP ${response.status}${attempt > 1 ? ` after ${attempt} attempts` : ''}`
+        );
+      }
+
+      const retryAfterHeader = response.headers.get('retry-after');
+      const retryAfterSeconds = Number(retryAfterHeader);
+      const retryAfterDate = Date.parse(retryAfterHeader || '');
+      const retryAfterMs = retryAfterHeader && retryAfterHeader.trim() !== ''
+        ? (Number.isFinite(retryAfterSeconds) && retryAfterSeconds >= 0
+          ? retryAfterSeconds * 1_000
+          : Number.isFinite(retryAfterDate)
+            ? Math.max(0, retryAfterDate - Date.now())
+            : null)
+        : null;
+      const waitMs = Math.min(retryAfterMs ?? 1_000 * 2 ** (attempt - 1), 30_000);
+
+      console.warn(
+        `GoatCounter ${kind} returned HTTP ${response.status}; retrying in ${(waitMs / 1_000).toFixed(1)}s (${attempt}/${maxAttempts - 1})`
+      );
+      await delay(waitMs);
+    }
+
+    throw new Error(`GoatCounter ${kind} failed after ${maxAttempts} attempts`);
   }
 
   async function rowsFor(kind) {
