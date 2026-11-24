@@ -1,11 +1,11 @@
 {
   "days": 30,
-  "updatedAt": "2026-11-24T00:00:00.000Z",
-  "total": 49,
+  "updatedAt": "2026-11-24T10:00:00.000Z",
+  "total": 50,
   "countries": [
     [
       "JP",
-      24
+      25
     ],
     [
       "CN",
@@ -69,7 +69,7 @@
     ],
     [
       "Direct or unknown",
-      14
+      15
     ],
     [
       "weixin110.qq.com",
