@@ -31,11 +31,6 @@ redirect_from:
   {% include academic-publication.html compact=true %}
 </section>
 
-<section id="projects" class="section" aria-labelledby="projects-title">
-  <div class="section-heading"><h2 id="projects-title">Ongoing research</h2></div>
-  {% include academic-projects.html %}
-</section>
-
 {% assign latest_talk = site.data.talks | sort: 'year' | last %}
 {% if latest_talk %}
 <section id="talks" class="section" aria-labelledby="recent-talk-title">
