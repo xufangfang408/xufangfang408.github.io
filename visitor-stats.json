@@ -1,15 +1,15 @@
 {
   "days": 30,
-  "updatedAt": "2026-11-25T09:00:00.000Z",
-  "total": 55,
+  "updatedAt": "2026-11-25T21:00:00.000Z",
+  "total": 58,
   "countries": [
     [
       "JP",
-      30
+      31
     ],
     [
       "CN",
-      16
+      17
     ],
     [
       "HK",
@@ -22,6 +22,10 @@
     [
       "US",
       2
+    ],
+    [
+      "SG",
+      1
     ]
   ],
   "regions": [
@@ -69,11 +73,15 @@
     ],
     [
       "Direct or unknown",
-      17
+      18
     ],
     [
       "weixin110.qq.com",
-      10
+      11
+    ],
+    [
+      "github.com",
+      1
     ]
   ]
 }
