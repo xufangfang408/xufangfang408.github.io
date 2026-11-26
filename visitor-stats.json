@@ -1,7 +1,7 @@
 {
   "days": 30,
-  "updatedAt": "2026-11-26T08:00:00.000Z",
-  "total": 62,
+  "updatedAt": "2026-11-26T21:00:00.000Z",
+  "total": 63,
   "countries": [
     [
       "JP",
@@ -17,7 +17,7 @@
     ],
     [
       "SG",
-      4
+      5
     ],
     [
       "TW",
@@ -69,7 +69,7 @@
   "sources": [
     [
       "xufangfang408.github.io",
-      30
+      31
     ],
     [
       "Direct or unknown",
