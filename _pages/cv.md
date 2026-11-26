@@ -21,7 +21,6 @@ redirect_from:
   <div class="section-heading"><h2>Research experience & preprint</h2></div>
   <p class="item-date">Spaceland · {{ site.data.academic.publication.period }}</p>
   {% include academic-publication.html %}
-  {% include academic-projects.html %}
 </section>
 <section class="section">
   <div class="section-heading"><h2>Selected honors</h2></div>
